@@ -30,7 +30,7 @@ for fn in sys.argv[2:]:
     ds = [[] for _ in range(nT)]
     lines = open(fn,'r').readlines()
     for l in lines[1:]:
-        es = re.split(r'[,\s\t]+', l.strip()[:-2])
+        es = re.split(r'[,\s\t]+', l.strip())
         for i, e in enumerate(es[1:]):
             ds[i].append(float(e))
         
