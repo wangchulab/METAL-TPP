@@ -10,7 +10,7 @@ def func(x, h, c, A):
 
 def get_Ts(temp_str):
     Ts = temp_str.strip('"')
-    Ts = Ts.split(" ")
+    Ts = re.split(r'[,\s\t]+', Ts)
     Ts = [float(t) for t in Ts]
     return Ts
 
