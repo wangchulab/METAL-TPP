@@ -1,0 +1,8 @@
+plot [0.9:][:5] "tmp" u 2:4 w p ps 0.1 pt 6 t "ctrl", "" u 3:5 w p ps 0.1 pt 6 t "exp"
+
+# 绘制虚线矩形
+set object 1 rect from 0.95,0 to 1,2 behind
+set object 1 rect fc rgb "white" fs empty border rgb "black" lw 1.0
+
+# 重新绘制数据以确保矩形在下方
+replot

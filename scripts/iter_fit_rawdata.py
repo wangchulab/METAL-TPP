@@ -88,6 +88,7 @@ with PdfPages('fitting.pdf') as pdf:
             plt.scatter(xdata, ydata*s, s = 20, color=S, marker='o')
         #plt.show()
         pdf.savefig()
+        plt.close()
     
         #check diff, change scale
         yfit = [func(i, popt[0], popt[1], popt[2]) for i in x1] #target
