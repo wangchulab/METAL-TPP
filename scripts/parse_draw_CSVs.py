@@ -87,6 +87,12 @@ with PdfPages('combined-results.pdf') as pdf:
                 with_in_tol = False
                 break
         
+        #output
+        out_str = "PRO= " + p
+        for i in range(nf):
+            out_str += f" Tm{i+1}= {p0_lst[i][1]:.2f} R2= {R2_lst[i]:.2f} ERR={ERR_lst[i]:.2f}"
+        print(out_str)
+
         if with_in_tol:
             #print(p, p0_lst, R2_lst)
             #draw
@@ -104,7 +110,3 @@ with PdfPages('combined-results.pdf') as pdf:
             pdf.savefig()
             plt.close()
             #output stderr
-            out_str = "PRO= " + p
-            for i in range(nf):
-                out_str += f" Tm{i+1}= {p0_lst[i][1]:.2f} R2= {R2_lst[i]:.2f} ERR={ERR_lst[i]:.2f}"
-            print(out_str)
