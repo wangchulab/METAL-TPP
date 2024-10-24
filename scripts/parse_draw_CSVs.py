@@ -59,6 +59,7 @@ with PdfPages('combined-results.pdf') as pdf:
     for p in tqdm(prot_count.keys(), desc="Processing proteins"):
         if prot_count[p] < nf: continue
         with_in_tol = True
+        skip_output = False
         R2_lst = []
         ERR_lst = []
         p0_lst = []
@@ -83,13 +84,18 @@ with PdfPages('combined-results.pdf') as pdf:
             R2 = R2[0,1]
             R2_lst.append(R2)
             ERR_lst.append(Tm_err)
-            if R2 < tol_R2 or Tm_err>10.0:
+            if R2 < tol_R2 or Tm_err > tol_sq:
                 with_in_tol = False
+            if R2 < 0.8 or Tm_err > 10.0:
+                skip_output = True
                 break
         
+        if skip_output: continue
         #output
         out_str = "PRO= " + p
+        legend_lst = []
         for i in range(nf):
+            legend_lst.append(f"Tm{i+1}= {p0_lst[i][1]:.2f} ({R2_lst[i]:.2f}, {ERR_lst[i]:.2f})")
             out_str += f" Tm{i+1}= {p0_lst[i][1]:.2f} R2= {R2_lst[i]:.2f} ERR={ERR_lst[i]:.2f}"
         print(out_str)
 
@@ -103,10 +109,11 @@ with PdfPages('combined-results.pdf') as pdf:
                 x2 = np.linspace(30.0, 80.0, 201)
                 y2 = [func(x, p0_lst[i][0], p0_lst[i][1], p0_lst[i][2]) for x in x2]
                 #fitting curve
-                plt.plot(x2, y2, color=color_lst[i])
+                plt.plot(x2, y2, color=color_lst[i], label=legend_lst[i])
                 #norm data
                 plt.scatter(x1, y1, s = 100, color="w", edgecolors=color_lst[i], marker='o', lw=2)
                 plt.title(p)
+                plt.legend(loc='upper right')
             pdf.savefig()
             plt.close()
             #output stderr
