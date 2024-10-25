@@ -72,7 +72,12 @@ with PdfPages('combined-results.pdf') as pdf:
             norm_lst.append(norm_data)
             xdata = [T0] + T + [TN]
             ydata = [100.0] + norm_data + [0.0]
-            popt, pcov = curve_fit(func, xdata, ydata, p0, bounds=b0)
+            try:
+                popt, pcov = curve_fit(func, xdata, ydata, p0, bounds=b0)
+            except:
+                print("Warning:", p, "fitting failed!", file=sys.stderr)
+                skip_output = True
+                break
             perr = np.sqrt(np.diag(pcov))
             Tm = popt[1]
             Hill = popt[0]
